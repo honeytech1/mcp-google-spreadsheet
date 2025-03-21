@@ -1,60 +1,60 @@
 # MCP Google Spreadsheet
 
-MCP (Model Context Protocol) サーバーとして実装された Google Spreadsheet および Google Drive 操作ツールです。このツールを使用することで、AI アシスタントが Google Spreadsheet や Google Drive のファイルを操作できるようになります。
+A Google Spreadsheet and Google Drive operation tool implemented as an MCP (Model Context Protocol) server. This tool enables AI assistants to manipulate Google Spreadsheet and Google Drive files.
 
-## 機能
+## Features
 
-### Google Drive 操作
+### Google Drive Operations
 
-- **list_files**: Google Drive のファイル一覧を取得
-- **copy_file**: Google Drive のファイルをコピー
-- **rename_file**: Google Drive のファイル名を変更
+- **list_files**: Get a list of files in Google Drive
+- **copy_file**: Copy a file in Google Drive
+- **rename_file**: Rename a file in Google Drive
 
-### Google Spreadsheet 操作
+### Google Spreadsheet Operations
 
-- **list_sheets**: スプレッドシート内のシート一覧を取得
-- **copy_sheet**: スプレッドシート内のシートをコピー
-- **rename_sheet**: スプレッドシート内のシート名を変更
-- **get_sheet_data**: シートのデータを取得
-- **add_rows**: シートに行を追加
-- **add_columns**: シートに列を追加
-- **update_cells**: 単一範囲のセルを更新
-- **batch_update_cells**: 複数範囲のセルを一括更新
+- **list_sheets**: Get a list of sheets in a spreadsheet
+- **copy_sheet**: Copy a sheet within a spreadsheet
+- **rename_sheet**: Rename a sheet within a spreadsheet
+- **get_sheet_data**: Retrieve data from a sheet
+- **add_rows**: Add rows to a sheet
+- **add_columns**: Add columns to a sheet
+- **update_cells**: Update cells in a single range
+- **batch_update_cells**: Batch update cells in multiple ranges
 
-## 前提条件
+## Prerequisites
 
-- Go 1.24 以上
-- Google Cloud Platform のプロジェクトと API 有効化
+- Go 1.24 or higher
+- Google Cloud Platform project with enabled APIs:
   - Google Drive API
   - Google Sheets API
 
-## インストール
+## Installation
 
 ```bash
 go install github.com/kazz187/mcp-google-spreadsheet@latest
 ```
 
-これにより、`$GOPATH/bin` ディレクトリに `mcp-google-spreadsheet` バイナリがインストールされます。
+This will install the `mcp-google-spreadsheet` binary in your `$GOPATH/bin` directory.
 
-## 設定
+## Configuration
 
-以下の環境変数を設定する必要があります：
+The following environment variables need to be set:
 
-- `MCPGS_CLIENT_SECRET_PATH`: Google API のクライアントシークレットファイルのパス (https://developers.google.com/identity/protocols/oauth2/native-app?hl=ja)
-- `MCPGS_TOKEN_PATH`: Google API のトークンファイルのパス（存在しない場合は自動的に作成されます）
-- `MCPGS_FOLDER_ID`: 操作対象とする Google Drive のフォルダ ID
+- `MCPGS_CLIENT_SECRET_PATH`: Path to the Google API client secret file (https://developers.google.com/identity/protocols/oauth2/native-app)
+- `MCPGS_TOKEN_PATH`: Path to the Google API token file (will be created automatically if it doesn't exist)
+- `MCPGS_FOLDER_ID`: ID of the Google Drive folder to operate on
 
-### Google API の設定手順
+### Google API Setup Steps
 
-1. [Google Cloud Console](https://console.cloud.google.com/) にアクセス
-2. プロジェクトを作成
-3. Google Drive API と Google Sheets API を有効化
-4. 認証情報を作成（OAuth クライアント ID）
-5. クライアントシークレットをダウンロード
+1. Access the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a project
+3. Enable the Google Drive API and Google Sheets API
+4. Create credentials (OAuth client ID)
+5. Download the client secret
 
-## 使用方法
+## Usage
 
-### 起動
+### Starting the Server
 
 ```bash
 export MCPGS_CLIENT_SECRET_PATH=/path/to/client_secret.json
@@ -63,13 +63,13 @@ export MCPGS_FOLDER_ID=your_folder_id
 mcp-google-spreadsheet
 ```
 
-`go install` でインストールした場合は、`$GOPATH/bin` が PATH に含まれていることを確認してください。
+If you installed using `go install`, ensure that `$GOPATH/bin` is included in your PATH.
 
-初回起動時は認証が必要です。ブラウザが自動的に開き、Google アカウントでの認証画面が表示されます。認証が完了すると自動的にアプリケーションに戻ります。ブラウザが自動的に開かない場合は、コンソールに表示される URL をブラウザで開いてください。
+On first launch, authentication is required. A browser will automatically open with the Google account authentication screen. After successful authentication, you will be automatically returned to the application. If the browser doesn't open automatically, open the URL displayed in the console.
 
-### MCP 設定
+### MCP Configuration
 
-Claude や ChatGPT などの AI アシスタントで使用するには、MCP の設定ファイルに以下のように追加します：
+To use with AI assistants like Claude or ChatGPT, add the following to your MCP configuration file:
 
 ```json
 {
@@ -87,10 +87,10 @@ Claude や ChatGPT などの AI アシスタントで使用するには、MCP �
 }
 ```
 
-`go install` でインストールした場合は、`command` に絶対パスを指定する代わりに、上記のように実行ファイル名のみを指定することもできます。その場合は、MCP サーバーを実行するユーザーの PATH に `$GOPATH/bin` が含まれていることを確認してください。
+If you installed using `go install`, you can specify just the executable name in the `command` field as shown above, instead of an absolute path. In that case, make sure `$GOPATH/bin` is included in the PATH of the user running the MCP server.
 
-## セキュリティ
+## Security
 
-- 指定されたフォルダ ID 内のファイルのみにアクセスが制限されます
-- ディレクトリトラバーサル攻撃（`../` などを使用したパス指定）は防止されます
-- ユーザーから指定されたファイルが指定フォルダ内に存在するかが検証されます
+- Access is restricted to files only within the specified folder ID
+- Directory traversal attacks (using `../` in paths) are prevented
+- Files specified by users are verified to exist within the specified folder
